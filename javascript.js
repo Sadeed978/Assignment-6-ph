@@ -12,7 +12,7 @@ const displayPosts = categories => {
         const categoryDiv = document.createElement('div'); 
         categoryDiv.classList.add('category');
         categoryDiv.innerHTML = `
-            <h3>${category.category_name}</h3>
+            <h3 class="active">${category.category_name}</h3>
         `;
         categoriesContainer.appendChild(categoryDiv);
     });
@@ -24,6 +24,7 @@ const loadCards = () => {
         .then(data => { displayCards(data.plants); })
         .catch(err => console.error("Error fetching data:", err));
 };
+
 loadCards();
 const displayCards = cards => {
     const cardsContainer = document.getElementById('cards-container');  
@@ -42,24 +43,42 @@ const displayCards = cards => {
                 <button class="card-btn btn bg-green-500">ADD TO CARD</button>
             </div>
         `;
+        const btn = cardDiv.querySelector('.card-btn');
+        btn.addEventListener('click', function() {
+            addToCart(card,btn);
+        });
         cardsContainer.appendChild(cardDiv);
     });
 };
-const btn = document.querySelector('.plant-container button');
-const plantContainer = document.querySelector('.plant-container');
-
-card-btn.addEventListener('click', function() {
-  document.querySelector('.plant-container')
-  document.createElement('div');
+let count = 0;
+function addToCart(card,btn ) {
+        const plantContainer = document.querySelector('.plant-container');
+        const newEntry = document.createElement('div');
         newEntry.className = 'bg-white p-4 rounded shadow mb-4';
         newEntry.innerHTML = `
             <h2 class="text-xl font-bold mb-2">${card.name}</h2>
-            <p class="text-gray-700 mb-2">Called: ${card.price}</p>
+            <p class="text-gray-700 mb-2">Price: ${card.price}</p>
             <p class="text-gray-700">Category: ${card.category}</p>
+            <button class=" remover bg-red-400">Remove</button>
         `;
-        plantContainer.prepend(newEntry);
+        plantContainer.appendChild(newEntry);
+        count=count + parseInt(card.price);
+        document.getElementById('count').innerText = `Total Amount: $${count}`;
     }
-);
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('remover')) {
+            const entry = event.target.closest('div');
+            const priceText = entry.querySelector('p').innerText;
+            const price = parseInt(priceText.replace('Price: ', ''));
+            count -= price;
+            document.getElementById('count').innerText = `Total Amount: $${count}`;
+            entry.remove();
+        }
+    });
+
+ 
+        
+
 
 
 
