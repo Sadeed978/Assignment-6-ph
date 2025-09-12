@@ -12,22 +12,23 @@ const displayPosts = categories => {
         const categoryDiv = document.createElement('div'); 
         categoryDiv.classList.add('category');
         categoryDiv.innerHTML = `
-            <h3 class="active">${category.category_name}</h3>
+            <button onclick="loadCards(${category.id})">${category.category_name}<button>
         `;
         categoriesContainer.appendChild(categoryDiv);
     });
 };
 
-const loadCards = () => {
-    fetch('https://openapi.programming-hero.com/api/plants')
+const loadCards = (id) => {
+    fetch(`https://openapi.programming-hero.com/api/category/${id}`)
         .then(res => res.json())
         .then(data => { displayCards(data.plants); })
         .catch(err => console.error("Error fetching data:", err));
 };
 
-loadCards();
+
 const displayCards = cards => {
-    const cardsContainer = document.getElementById('cards-container');  
+    const cardsContainer = document.getElementById('cards-container');
+    cardsContainer.innerHTML ===''; 
     cards.forEach(card => {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
@@ -48,6 +49,7 @@ const displayCards = cards => {
             addToCart(card,btn);
         });
         cardsContainer.appendChild(cardDiv);
+        
     });
 };
 let count = 0;
