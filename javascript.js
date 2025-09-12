@@ -28,7 +28,7 @@ const loadCards = (id) => {
 
 const displayCards = cards => {
     const cardsContainer = document.getElementById('cards-container');
-    cardsContainer.innerHTML ===''; 
+    cardsContainer.innerHTML =''; 
     cards.forEach(card => {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
